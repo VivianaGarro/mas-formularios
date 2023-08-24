@@ -8,14 +8,30 @@ function App() {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [passwordConfirm, setPasswordConfirm] = useState('')
-
+  const [hizoSubmit, setHizoSubmit] = useState(false);
+  
   const [errorFirstName, setErrorFirstName] = useState('')
   const [errorLastName, setErrorLastName] = useState('');
   const [errorEmail, setErrorEmail] = useState('');
-  const [errorPassword, setErrorPassword] = useState('');
-  const [errorConfirmPassword, setErrorConfirmPassword] = useState('');
+  
+  const crearUsuario = (e) => {
+    e.preventDeafult();
+    const nuevoUsuario = {firstName, lastName, email};
+    console.log(nuevoUsuario);
+    setFirstName("");
+    setLastName("");
+    setEmail("");
+    setHizoSubmit(true);
+  }
+
+
+
+  const initialState = {
+    firstName: {value: '', error: null},
+    lastName: {value: '', error: null},
+    email: {value: '', error: null}
+    };
+    
 
   const handleErrorFirstName = (e) =>{
     setFirstName(e);
@@ -50,48 +66,18 @@ function App() {
     setEmail(e);
   
     if (validator.isEmail(email)) {
-      setErrorEmail('Valid Email :)')
+      setErrorEmail('Email válido:)')
     } else {
-      setErrorEmail('Enter valid Email!')
-    }
-  }
-
-  const handleErrorPassword = (e) =>{
-    setPassword(e);
-    if(e.length < 8){
-      if(e == ''){
-        setErrorPassword('');
-      }
-      else{
-        setErrorPassword('La contraseña debe tener al menos 8 caracteres');
-      }
-    }
-    else{
-      setErrorPassword('');
-    }
-  }
-
-  const handleErrorPasswordConfirmation = (e) =>{
-    setPasswordConfirm(e);
-    if(e.length < 8){
-      if(e == ''){
-        setErrorConfirmPassword('');
-      }
-      else{
-        setErrorConfirmPassword('La contraseña debe tener al menos 8 caracteres');
-      }
-    }
-    else if(password != e){
-      setErrorConfirmPassword('Las contraseñas deben coincidir');
-    }
-    else{
-      setErrorConfirmPassword('');
+      setErrorEmail('Ingresa un Email válido!')
     }
   }
 
   return (
     <div>
       <h1>Formulario</h1>
+      <h5>
+        {hizoSubmit ? "Gracias poringresar tus datos!" : "Favor de ingresar tus datos"}
+      </h5>
       <form>
         <div>
           <label>Nombre: </label>
@@ -110,18 +96,8 @@ function App() {
           <input type='text' name='email' onChange={(e) => handleErrorEmail(e.target.value)}/>
           <p>{errorEmail}</p>
         </div>
+        <input type="submit" className="btn btn-success" value="Crear Usuario" />
 
-        <div>
-          <label>Contraseña: </label>
-          <input type='password' name='password' onChange={(e) => handleErrorPassword(e.target.value)}></input>
-          <p>{errorPassword}</p>
-        </div>
-
-        <div>
-          <label>Confirme contraseña: </label>
-          <input type='password' name='passwordConfirm' onChange={(e) => handleErrorPasswordConfirmation(e.target.value)}></input>
-          <p>{errorConfirmPassword}</p>
-        </div>
       </form>
       
     </div>
